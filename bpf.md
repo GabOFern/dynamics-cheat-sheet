@@ -21,6 +21,12 @@ As etapas, são os "nós" que aparecem na interface, tendo os seguintes possivei
 - Pendente: Circulo cinza/branco
 - Finalizado: Todos os circulos azuis, o ultimo azul com uma bandeira
 
+Para *finalizar* um BPF, o usuário deve prosseguir para a próxima etapa até haver alguma etapa que não possui uma próxima etapa e clicar em "Concluir"
+
+Para *reabrir* um BPF, o usuário deve clicar em Processar (se não aparecer, clique nos três pontos) e então clicar em "Reabrir"
+
+(Também sendo possivel alternar entre os BPFs nessa mesma tela caso necessário)
+
 ## Iniciando em uma tabela, finalizando em outra
 Uma função interessante para os BPFs, é o fato de que você pode transitar entre mais de uma tabela em meio aos estagios
 Para isso, será necessário referenciar campos de outra tabela na etapa, possivel ao clicar em "Relacionados"
@@ -28,6 +34,8 @@ Para isso, será necessário referenciar campos de outra tabela na etapa, possiv
 Na prática, assim que o usuário clicar na etapa onde essa transição ocorre, a tela irá atualizar, indo para essa nova atividade ou tabela (o que também poderá atualizar os formulários)
 
 ## Scripts Úteis
+Em geral, essas informações são possiveis de se procurar no banco do dataverse, mas com os snippets e scripts é consideravelmente mais fácil, principalmente se quiser usar um BPF ou uma etapa como gatilho para algo
+
 ### Como capturar se um BPF foi finalizado ou não
 ```
 Xrm.Page.data.process.getStatus();
