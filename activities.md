@@ -1,4 +1,12 @@
-# Atividades e o que são
+# Visão geral
+- Atividades e o que são
+- Limitações
+- Campos criados por padrão
+- Quando usar uma activity
+- QUando não usar uma activity
+
+
+## Atividades e o que são
 Atividades são um tipo de tabela do dynamics, que possui alguns comportamentos padrão, como fazer parte do grupo de "atividades", e filha de "*activitypointer*", que é a tabela que armazena todas as atividades.
 
 Exemplos de atividades nativas: Email, Phone Call, Task, Appointment, Letter, Fax E Social Activity
