@@ -29,12 +29,18 @@ Na prática, assim que o usuário clicar na etapa onde essa transição ocorre, 
 
 ## Scripts Úteis
 ### Como capturar se um BPF foi finalizado ou não
+```
 Xrm.Page.data.process.getStatus();
+```
 
 ### Como capturar o guid do estágio atual do processo
+```
 Xrm.Page.data.process.getActiveStage();
+```
 
 ### Capturar apenas o BPF que está ativo AGORA no registro
+
+```
 setTimeout(function() {
     try {
         var activeProcess = Xrm.Page.data.process.getActiveProcess();
@@ -53,8 +59,11 @@ setTimeout(function() {
         console.error("Erro ao obter o processo BPF ativo:", error.message);
     }
 }, 100); // Pequeno atraso de 100ms para auxiliar na exibição do console
+```
 
 ### Capturar TODOS os estágios do bpf atual
+
+```
 (function() {
     // Tentativa de log inicial para verificar se o console está funcionando minimamente
     console.log("--- Iniciando verificação do BPF ---");
@@ -88,3 +97,4 @@ setTimeout(function() {
 
     console.log("--- Verificação do BPF Finalizada ---");
 })();
+```
