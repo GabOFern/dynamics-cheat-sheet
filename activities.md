@@ -1,4 +1,5 @@
-# Visão geral
+# Activities
+## Sumário
 - Atividades e o que são
 - Limitações
 - Campos criados por padrão

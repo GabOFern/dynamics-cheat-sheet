@@ -1,10 +1,16 @@
-# Visão Geral
-Topicos Gerais
-- BPFs (Business Process Flow) o que é
-- Tipos de etapas
-- Scripts Úteis
+# Business Process Flow (BPF)
 
-## BPFs (Business Process Flow) o que é
+## Sumário
+- [O que é BPF](#o-que-é-bpf)
+- [Tipos de etapas](#tipos-de-etapas)
+- [Iniciando em uma tabela, finalizando em outra](#iniciando-em-uma-tabela-finalizando-em-outra)
+- [Scripts úteis](#scripts-úteis)
+  - [Capturar status do BPF](#capturar-status-atual-do-bpf)
+  - [Capturar guid do estágio atual](#capturar-guid-do-estágio-atual)
+  - [Capturar guid do BPF ativo](#capturar-guid-do-bpf-ativo)
+  - [Capturar TODOS os estágios do BPF atual com guids](#capturar-todos-os-estágios-do-bpf-atual-com-guids)
+
+## O que é BPF
 São fluxos de trabalho feito em etapas (representadas por nodes) na interface de um formulário.
 
 Cada entidade (tabela) pode ter até 10 BPFs com NO MÁXIMO 30 etapas cada.
@@ -36,19 +42,50 @@ Na prática, assim que o usuário clicar na etapa onde essa transição ocorre, 
 ## Scripts Úteis
 Em geral, essas informações são possiveis de se procurar no banco do dataverse, mas com os snippets e scripts é consideravelmente mais fácil, principalmente se quiser usar um BPF ou uma etapa como gatilho para algo
 
-### Como capturar se um BPF foi finalizado ou não
-```
+### Capturar status atual do BPF
+Versão legado
+``` js
 Xrm.Page.data.process.getStatus();
 ```
-
-### Como capturar o guid do estágio atual do processo
+### Capturar Guid do Estágio atual
+Versão moderna:
+``` js
+formContext.data.process.getActiveStage();
 ```
+
+Versão legado
+``` js
 Xrm.Page.data.process.getActiveStage();
 ```
+### Capturar guid do BPF ativo
+Versão moderna:
+``` js
+function getActiveBPFInfo(executionContext) {
+    var formContext = executionContext.getFormContext();
 
-### Capturar apenas o BPF que está ativo AGORA no registro
+    setTimeout(function () {
+        try {
+            var activeProcess = formContext.data.process.getActiveProcess();
 
+            if (activeProcess) {
+                var processName = activeProcess.getName();
+                var processId = activeProcess.getId();
+                console.log("--- Processo BPF Ativo ---");
+                console.log("Nome do Processo:", processName);
+                console.log("GUID do Processo:", processId);
+                console.log("--------------------------");
+            } else {
+                console.log("Nenhum BPF ativo encontrado.");
+            }
+        } catch (error) {
+            console.error("Erro ao obter o processo BPF ativo:", error.message);
+        }
+    }, 100);
+}
 ```
+
+Versão legado
+``` js
 setTimeout(function() {
     try {
         var activeProcess = Xrm.Page.data.process.getActiveProcess();
@@ -68,10 +105,45 @@ setTimeout(function() {
     }
 }, 100); // Pequeno atraso de 100ms para auxiliar na exibição do console
 ```
+### Capturar TODOS os estágios do bpf atual com guids
+Versão moderna:
+``` js
+function verificarBPF(executionContext) {
+    var formContext = executionContext.getFormContext();
 
-### Capturar TODOS os estágios do bpf atual
+    console.log("--- Iniciando verificação do BPF ---");
 
+    try {
+        var activeProcess = formContext.data.process.getActiveProcess();
+
+        if (activeProcess) {
+            console.log("BPF Ativo encontrado!");
+            console.log("Nome do BPF: " + activeProcess.getName());
+
+            var stages = activeProcess.getStages();
+
+            if (stages && stages.getLength() > 0) {
+                console.log("--- Todos os Estágios do BPF Atual ---");
+                stages.forEach(function (stage, index) {
+                    console.log("Estágio " + (index + 1) + ": " + stage.getName() + " -> GUID: " + stage.getId());
+                });
+                console.log("--------------------------------------");
+            } else {
+                console.log("Nenhum estágio encontrado para o BPF ativo.");
+            }
+        } else {
+            console.log("Nenhum BPF ativo encontrado.");
+        }
+    } catch (error) {
+        console.error("Erro ao processar BPF:", error.message);
+    }
+
+    console.log("--- Verificação do BPF Finalizada ---");
+}
 ```
+
+Versão Legado
+``` js
 (function() {
     // Tentativa de log inicial para verificar se o console está funcionando minimamente
     console.log("--- Iniciando verificação do BPF ---");
